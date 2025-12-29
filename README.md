@@ -1,11 +1,11 @@
-# 🛵 Vibe Bites Delivery - Gen Z Food App
+# 🛵 VibeBites  - Gen Z Food App
 
 > **Manifest your munchies.** A mood-based food delivery web app designed for the modern foodie.
 
 ![Project Banner](https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000&auto=format&fit=crop)
 
 ## 🔗 Live Demo
-**[Click here to view the Live App](https://apoorva935.github.io/Vibe-Bites-Delivery/)**
+**[Click here to view the Live App](https://apoorva935.github.io/vibebites/)**
 
 ## 💡 About The Project
 Vibe Bites Delivery is a frontend web application that reimagines the food ordering experience. Instead of scrolling through endless menus, users filter food based on their **current mood** (Party, Comfort, Spicy). It features a fully functional cart, checkout simulation, and a live delivery tracking animation.
