@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeBites | Desi Delivery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        :root {
+            --neon: #ff3366;
+            --dark: #0f0f0f;
+            --card: #1a1a1a;
+            --green: #00ff88;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--dark); color: white; -webkit-tap-highlight-color: transparent; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; padding-bottom: 120px; }
+        button { cursor: pointer; font-family: inherit; }
+
+        /* --- 1. LOGIN --- */
+        #auth-page { position: fixed; inset: 0; z-index: 999; background: #000; display: flex; justify-content: center; align-items: center; background-image: radial-gradient(circle at center, #222 0%, #000 100%); }
+        .auth-box { text-align: center; width: 80%; }
+        .glow-btn { width: 100%; padding: 16px; border-radius: 50px; background: var(--neon); border: none; color: white; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 20px rgba(255, 51, 102, 0.4); margin-top: 20px; transition: 0.3s; }
+        .glow-btn:active { transform: scale(0.95); }
+
+        /* --- 2. HEADER & SEARCH --- */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .search-bar { width: 100%; padding: 15px; background: var(--card); border: 1px solid #333; border-radius: 15px; color: white; box-sizing: border-box; font-size: 1rem; margin-bottom: 20px; }
+        
+        /* --- 3. CATEGORIES --- */
+        .cats { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .pill { padding: 8px 20px; background: #222; border-radius: 50px; white-space: nowrap; border: 1px solid #333; color: #888; transition: 0.3s; }
+        .pill.active { background: var(--neon); color: white; border-color: var(--neon); font-weight: 800; }
+
+        /* --- 4. MENU GRID --- */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: var(--card); border-radius: 20px; overflow: hidden; position: relative; border: 1px solid #333; }
+        .card img { width: 100%; height: 130px; object-fit: cover; }
+        .info { padding: 12px; }
+        .add-btn { width: 100%; background: #333; color: white; border: none; padding: 8px; border-radius: 8px; margin-top: 8px; font-weight: bold; }
+        .add-btn:hover { background: white; color: black; }
+
+        /* --- 5. FLOATING CART --- */
+        .cart-float { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 460px; background: var(--neon); padding: 15px 25px; border-radius: 20px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 10px 40px rgba(255, 51, 102, 0.5); z-index: 500; font-weight: 800; }
+
+        /* --- 6. CHECKOUT --- */
+        #checkout { display: none; position: fixed; inset: 0; background: var(--dark); z-index: 800; padding: 20px; overflow-y: auto; }
+        .bill-row { display: flex; justify-content: space-between; margin: 10px 0; color: #ccc; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #444; }
+        .input-field { width: 100%; padding: 15px; background: #222; border: 1px solid #444; color: white; border-radius: 12px; margin-bottom: 10px; box-sizing: border-box; }
+
+        /* --- 7. TRACKING --- */
+        #tracking { display: none; position: fixed; inset: 0; background: var(--dark); z-index: 900; padding: 30px; text-align: center; }
+        .timer-box { font-size: 3rem; font-weight: 800; margin: 20px 0; font-variant-numeric: tabular-nums; color: var(--green); text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+        .map-sim { height: 6px; background: #333; border-radius: 10px; margin: 40px 0; position: relative; }
+        .bike { position: absolute; top: -35px; left: 0; font-size: 2rem; transition: left 1s linear; }
+        .path { height: 100%; width: 0; background: var(--green); border-radius: 10px; transition: width 1s linear; }
+    </style>
+</head>
+<body>
+
+    <div id="auth-page">
+        <div class="auth-box">
+            <h1 style="font-size: 3rem; margin-bottom: 0; color: var(--neon);">VibeBites</h1>
+            <p style="color: #888;">Order food that matches your mood.</p>
+            <input type="text" id="username" placeholder="Enter your name" style="padding: 15px; border-radius: 12px; border: none; text-align: center; font-size: 1.1rem; width: 80%;">
+            <button class="glow-btn" onclick="login()">Enter App ➔</button>
+        </div>
+    </div>
+
+    <div id="app" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <div>
+                    <div style="font-size: 0.9rem; color: #888;">Good Evening,</div>
+                    <div style="font-size: 1.5rem; font-weight: 800;" id="user-display">User</div>
+                </div>
+                <div style="background: #222; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;">👤</div>
+            </div>
+
+            <input type="text" class="search-bar" placeholder="Search for Biryani, Pizza..." onkeyup="filterMenu(this.value)">
+
+            <div class="cats">
+                <div class="pill active" onclick="setCat('All', this)">All</div>
+                <div class="pill" onclick="setCat('Happy', this)">🥳 Party</div>
+                <div class="pill" onclick="setCat('Comfort', this)">😌 Comfort</div>
+                <div class="pill" onclick="setCat('Spicy', this)">🔥 Spicy</div>
+            </div>
+            <br>
+
+            <div class="grid" id="menu-grid"></div>
+        </div>
+        
+        <div class="cart-float" id="cart-bar" onclick="openCheckout()">
+            <span id="cart-count">0 Items</span>
+            <span>View Cart ></span>
+            <span id="cart-total">₹0</span>
+        </div>
+    </div>
+
+    <div id="checkout">
+        <button onclick="closeCheckout()" style="background:none; border:none; color: var(--neon); font-weight: 800; font-size: 1.2rem;">← Back</button>
+        <h1>Checkout</h1>
+        
+        <div style="background: #222; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">Delivery Address</h3>
+            <input type="text" class="input-field" id="address" placeholder="e.g. 102, Galaxy Apartments">
+            <input type="text" class="input-field" placeholder="Phone Number">
+        </div>
+
+        <div style="background: #222; padding: 20px; border-radius: 20px;">
+            <h3 style="margin-top: 0;">Order Summary</h3>
+            <div id="bill-items"></div>
+            <div class="bill-row"><span>Delivery Fee</span><span>₹40</span></div>
+            <div class="total-row"><span>Grand Total</span><span id="final-total">₹0</span></div>
+        </div>
+
+        <button class="glow-btn" style="background: var(--green); box-shadow: 0 0 20px rgba(0,255,136,0.3); color: black;" onclick="placeOrder()">Confirm Order</button>
+    </div>
+
+    <div id="tracking">
+        <div style="font-size: 4rem; margin-top: 50px;">🛵</div>
+        <h2>Order Confirmed!</h2>
+        <p style="color: #888;">Arriving in</p>
+        <div class="timer-box" id="timer">25:00</div>
+        
+        <div class="map-sim">
+            <div class="path" id="path-line"></div>
+            <div class="bike" id="bike-icon">🛵</div>
+            <div style="position: absolute; right: 0; top: -35px;">🏠</div>
+        </div>
+
+        <p style="color: #666; font-size: 0.9rem;">Your delivery partner is on the way.</p>
+        <button onclick="location.reload()" style="background: none; border: 1px solid #444; padding: 10px 20px; color: #888; border-radius: 50px; margin-top: 30px;">Cancel Order</button>
+    </div>
+
+    <script>
+        // DATA
+        const menu = [
+            { id: 1, name: 'Butter Chicken', cat: 'Comfort', price: 320, img: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400' },
+            { id: 2, name: 'Veg Biryani', cat: 'Comfort', price: 210, img: 'https://images.unsplash.com/photo-1563379091339-03b21bc4a4f8?w=400' },
+            { id: 3, name: 'Paneer Tikka', cat: 'Happy', price: 280, img: 'https://images.unsplash.com/photo-1567184109191-3783e75e92ec?w=400' },
+            { id: 4, name: 'Loaded Pizza', cat: 'Happy', price: 450, img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400' },
+            { id: 5, name: 'Schezwan Noodles', cat: 'Spicy', price: 180, img: 'https://images.unsplash.com/photo-1612927608282-b280ff16599c?w=400' },
+            { id: 6, name: 'Spicy Wings', cat: 'Spicy', price: 250, img: 'https://images.unsplash.com/photo-1608039755401-742074f0548d?w=400' },
+        ];
+
+        let cart = {}; // Object to store items: { id: quantity }
+
+        // INIT
+        function login() {
+            const name = document.getElementById('username').value;
+            if(!name) return alert("Please enter your name!");
+            document.getElementById('user-display').innerText = name;
+            document.getElementById('auth-page').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            renderMenu(menu);
+        }
+
+        // RENDER MENU
+        function renderMenu(items) {
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = items.map(item => `
+                <div class="card">
+                    <img src="${item.img}">
+                    <div class="info">
+                        <div style="font-weight:bold; margin-bottom:5px">${item.name}</div>
+                        <div style="color:#888; font-size:0.9rem">₹${item.price}</div>
+                        <button class="add-btn" onclick="addToCart(${item.id})">ADD +</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // FILTER LOGIC
+        function setCat(cat, el) {
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            const filtered = cat === 'All' ? menu : menu.filter(i => i.cat === cat);
+            renderMenu(filtered);
+        }
+
+        function filterMenu(query) {
+            const filtered = menu.filter(i => i.name.toLowerCase().includes(query.toLowerCase()));
+            renderMenu(filtered);
+        }
+
+        // CART LOGIC
+        function addToCart(id) {
+            cart[id] = (cart[id] || 0) + 1;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = Object.values(cart).reduce((a, b) => a + b, 0);
+            if (totalItems > 0) {
+                document.getElementById('cart-bar').style.display = 'flex';
+                let totalCost = 0;
+                Object.keys(cart).forEach(id => {
+                    const item = menu.find(i => i.id == id);
+                    totalCost += item.price * cart[id];
+                });
+                document.getElementById('cart-count').innerText = `${totalItems} Items`;
+                document.getElementById('cart-total').innerText = `₹${totalCost}`;
+            }
+        }
+
+        // CHECKOUT LOGIC
+        function openCheckout() {
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('checkout').style.display = 'block';
+            
+            const list = document.getElementById('bill-items');
+            list.innerHTML = '';
+            let total = 0;
+            
+            Object.keys(cart).forEach(id => {
+                const item = menu.find(i => i.id == id);
+                const qty = cart[id];
+                const cost = item.price * qty;
+                total += cost;
+                list.innerHTML += `
+                    <div class="bill-row">
+                        <span>${item.name} <b style="color:var(--neon)">x${qty}</b></span>
+                        <span>₹${cost}</span>
+                    </div>`;
+            });
+            document.getElementById('final-total').innerText = `₹${total + 40}`;
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+        }
+
+        function placeOrder() {
+            const addr = document.getElementById('address').value;
+            if(!addr) {
+                alert("Please enter a delivery address!");
+                return;
+            }
+            document.getElementById('checkout').style.display = 'none';
+            document.getElementById('tracking').style.display = 'block';
+            startTimer();
+        }
+
+        // TIMER & ANIMATION
+        function startTimer() {
+            let timeLeft = 1500; // 25 minutes in seconds
+            const timerDisplay = document.getElementById('timer');
+            const bike = document.getElementById('bike-icon');
+            const path = document.getElementById('path-line');
+            
+            // Animation Loop
+            const totalDuration = 25000; // Simulate 25 min in 25 seconds for demo
+            let elapsed = 0;
+            
+            const interval = setInterval(() => {
+                // Countdown logic
+                timeLeft--;
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                timerDisplay.innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                
+                // Animation logic
+                elapsed += 1000;
+                const percent = Math.min((elapsed / totalDuration) * 100, 100);
+                bike.style.left = `calc(${percent}% - 20px)`;
+                path.style.width = `${percent}%`;
+
+                if (timeLeft <= 0) clearInterval(interval);
+            }, 1000);
+        }
+    </script>
+</body>
+              </html>
+  
