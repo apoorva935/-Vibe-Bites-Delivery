@@ -1,32 +1,32 @@
-# 🛵 VibeBites - Gen Z Food Delivery App
+# 🛵 Vibe Bites Delivery - Gen Z Food App
 
 > **Manifest your munchies.** A mood-based food delivery web app designed for the modern foodie.
 
 ![Project Banner](https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000&auto=format&fit=crop)
 
 ## 🔗 Live Demo
-**[Click here to view the Live App](https://apoorva935.github.io/vibebites-delivery/)**
+**[Click here to view the Live App](https://apoorva935.github.io/Vibe-Bites-Delivery/)**
 
 ## 💡 About The Project
-VibeBites is a frontend web application that reimagines the food ordering experience. Instead of scrolling through endless menus, users filter food based on their **current mood** (Party, Comfort, Spicy). It features a fully functional cart, checkout simulation, and a live delivery tracking animation.
+Vibe Bites Delivery is a frontend web application that reimagines the food ordering experience. Instead of scrolling through endless menus, users filter food based on their **current mood** (Party, Comfort, Spicy). It features a fully functional cart, checkout simulation, and a live delivery tracking animation.
 
 ### ✨ Key Features
 * **Mood-Based Filtering:** One-click sorting for "Party Mode", "Comfort Food", and "Spicy Cravings".
 * **Live Search:** Real-time search bar to find specific dishes instantly.
-* **Smart Cart:** Dynamic floating cart that calculates totals and tracks quantities (e.g., 2x Butter Chicken).
+* **Smart Cart:** Dynamic floating cart that calculates totals and tracks quantities.
 * **Gen Z UI/UX:** Glassmorphism, neon accents, and dark mode aesthetic.
 * **Live Tracking Simulation:** A visual map animation showing the delivery partner moving towards the home icon with a countdown timer.
 
 ## 🛠️ Tech Stack
 * **HTML5:** Semantic structure.
 * **CSS3:** Flexbox, Grid, CSS Variables, and Keyframe Animations.
-* **JavaScript (Vanilla):** DOM manipulation, array filtering, cart logic, and `setInterval` for timers.
+* **JavaScript (Vanilla):** DOM manipulation, array filtering, cart logic, and timer events.
 * **Google Fonts:** 'Plus Jakarta Sans' for modern typography.
 
 ## 🚀 How to Run Locally
 1.  Clone the repository:
     ```bash
-    git clone [https://github.com/apoorva935/vibebites-delivery.git](https://github.com/apoorva935/vibebites-delivery.git)
+    git clone [https://github.com/apoorva935/Vibe-Bites-Delivery.git](https://github.com/apoorva935/Vibe-Bites-Delivery.git)
     ```
 2.  Navigate to the project folder.
 3.  Open `index.html` in your web browser.
